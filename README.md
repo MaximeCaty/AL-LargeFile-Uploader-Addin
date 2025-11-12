@@ -13,7 +13,7 @@ The reason is that OutStream.Write() function is very slow when running on large
 
 ![enter image description here](https://github.com/MaximeCaty/AL-LargeFile-Uploader-Addin/blob/main/screenshot.png?raw=true)
 
-You may put the addin files (upload.css, upload.js, TOOChunkedFileUploader.ControlAddin) in your project under an Addin subfolder. They must be locate din the same folder.
+You may put the addin files (upload.css, upload.js, TOOChunkedFileUploader.ControlAddin.al) in your project under an Addin subfolder. They must be located in the same folder.
 
 
 ## Usage
