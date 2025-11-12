@@ -4,6 +4,8 @@
 Offer upload of **larger file than build-in 350 MB limit**, using Javascript addin.
 Javacript addin is used to send chunks of file data to the page AL backend, who write each received chunk back into an Outstream.
 
+With this method the **maximum size is 2 GB**, this is the maximum supported In-Out Stream size in AL.
+
 Unfortunatly this method is **much slower than build-tin UploadIntoStream() function**.
 The reason is that OutStream.Write() function is very slow when running on large Text variable, and I did not find another way to pass the data with limited JS to AL interop capability.
 
