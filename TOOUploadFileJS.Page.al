@@ -17,7 +17,6 @@ page 51014 "TOO Upload File JS"
                     Caption = 'File Name';
                     Editable = false;
                 }
-
                 field(FileSize; FileSize)
                 {
                     Caption = 'File Size';
@@ -41,13 +40,13 @@ page 51014 "TOO Upload File JS"
                     Editable = false;
                     Enabled = false;
                 }
-
                 usercontrol(ChunkedUploader; "TOO ChunkedFileUploader")
                 {
                     ApplicationArea = All;
 
                     trigger StartUpload(FileName: Text; TotalSize: Integer)
                     begin
+                        // A new file was droped to the control addin
                         clear(TempBlob);
                         TempBlob.CreateOutStream(OutStr, TextEncoding::Windows); // single byte text encoding
                         this.FileName := FileName;
@@ -55,7 +54,6 @@ page 51014 "TOO Upload File JS"
                         TotalSizeGlobal := TotalSize;
                         ReceivedSizeGlobal := 0;
                         Progression := ProgressBar(0, 12);
-                        //Clear(TempFile);
                         StartDT := CurrentDateTime;
                         LastChunkDT := CurrentDateTime;
                     end;
@@ -66,7 +64,6 @@ page 51014 "TOO Upload File JS"
                     begin
                         ChunkSize := StrLen(BinaryTextChunk);
                         OutStr.WriteText(BinaryTextChunk);
-                        //TempFile.AddText(BinaryTextChunk);
                         ReceivedSizeGlobal += ChunkSize;
 
                         // speed / duration
@@ -83,7 +80,7 @@ page 51014 "TOO Upload File JS"
                         UploadSpeed := '';
                         EstRemainingDur := 0;
                         UploadCompleted := true;
-                        Message('Upload completed ! You can now close this window.');
+                        Message('Upload completed ! You can close this window to continue.');
                     end;
 
                     trigger UploadError(ErrorMessage: Text)
@@ -105,7 +102,6 @@ page 51014 "TOO Upload File JS"
         if not UploadCompleted then
             Error('No file were uploaded or completed.');
         FileName := this.FileName;
-        //TempFile.Read(InStr);
         TempBlob.CreateInStream(InStr)
     end;
 
@@ -135,7 +131,6 @@ page 51014 "TOO Upload File JS"
         TotalSizeGlobal: Integer;
         TempBlob: Codeunit "Temp Blob";
         OutStr: OutStream;
-        //TempFile: BigText;
         UploadCompleted: Boolean;
         Progression: Text;
         StartDT: DateTime;
