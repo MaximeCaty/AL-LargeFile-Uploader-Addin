@@ -4,16 +4,13 @@ function arrayBufferToBinaryText(buffer) {
     return textDecoder.decode(buffer, { stream: true });
 }
 
-// Fonction principale pour uploader le fichier en chunks
 function uploadFileInChunks(file, chunkSize = 1024 * 1024 * 2) {  // default chunk size (2 MB)
     const totalSize = file.size;
     const fileName = file.name;
     let offset = 0;
     let chunkNumber = 0;
 
-    // Déclencher l'événement de démarrage en AL de manière asynchrone
     Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('StartUpload', [fileName, totalSize], false, () => {
-        // Succès : démarrer la lecture des chunks
         readNextChunk();
     }, (error) => {
         Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('UploadError', [error]);
@@ -25,7 +22,6 @@ function uploadFileInChunks(file, chunkSize = 1024 * 1024 * 2) {  // default chu
             const reader = new FileReader();
             reader.onload = (e) => {
                 const binaryText = arrayBufferToBinaryText(e.target.result);
-                // Send chunk to AL asynchronously
                 Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('UploadChunk', [binaryText, chunkNumber], false, () => {
                     // Sucess : go to next chunk
                     chunkNumber++;
@@ -42,7 +38,6 @@ function uploadFileInChunks(file, chunkSize = 1024 * 1024 * 2) {  // default chu
         } else {
             // End of chunks : trigger the finish upload AL function
             Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('FinishUpload', [], false, () => {
-                // Optionnel : notifier la fin complète si besoin
                 console.log('File Upload finished sucessfully');
             }, (error) => {
                 Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('UploadError', [error]);
@@ -92,19 +87,6 @@ function initUploader() {
             uploadFileInChunks(file);
         }
     });
-
-    /*const placeholder = document.getElementById('controlAddIn');  // L'élément parent dans l'iframe
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.onchange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            uploadFileInChunks(file);
-        }
-    };
-    placeholder.appendChild(fileInput);  // Input caché
-    */
 }
 
-// Appel initial (dans startup.js ou directement)
 initUploader();
