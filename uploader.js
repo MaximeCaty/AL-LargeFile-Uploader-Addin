@@ -1,4 +1,4 @@
-const textDecoder = new TextDecoder('iso-8859-1');  // Latin-1 = 1 octet = 1 char
+const textDecoder = new TextDecoder('iso-8859-1');  // 1 byte = 1 char, no length encoding
 
 function arrayBufferToBinaryText(buffer) {
     return textDecoder.decode(buffer, { stream: true });
@@ -23,11 +23,12 @@ function uploadFileInChunks(file, chunkSize = 1024 * 1024 * 2) {  // default chu
             reader.onload = (e) => {
                 const binaryText = arrayBufferToBinaryText(e.target.result);
                 Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('UploadChunk', [binaryText, chunkNumber], false, () => {
-                    // Sucess : go to next chunk
+                    // Wait AL function to finish to go to next chunk
                     chunkNumber++;
                     offset += chunkSize;
                     readNextChunk();
                 }, (error) => {
+                    // AL Error, stop upload
                     Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('UploadError', [error]);
                 });
             };
@@ -46,7 +47,7 @@ function uploadFileInChunks(file, chunkSize = 1024 * 1024 * 2) {  // default chu
     };
 }
 
-// Fonction d'initialisation (appelée au startup, ex: dans startup.js)
+// Create html addin elements
 function initUploader() {
 
     var addin = document.getElementById('controlAddIn');
@@ -90,3 +91,4 @@ function initUploader() {
 }
 
 initUploader();
+
