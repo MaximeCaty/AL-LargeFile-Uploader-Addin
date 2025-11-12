@@ -7,9 +7,10 @@ controladdin "TOO ChunkedFileUploader"
     StartupScript = 'uploader.js';
     StyleSheets = 'uploader.css';
 
-    // Événements déclenchés par JS
+    // JS triggers
     event StartUpload(FileName: Text; TotalSize: Integer);
     event UploadChunk(BinaryTextChunk: Text; ChunkNumber: Integer);
     event FinishUpload();
     event UploadError(ErrorMessage: Text);
+
 }
