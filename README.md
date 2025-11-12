@@ -7,11 +7,12 @@ Javacript addin is used to send chunks of file data to the page AL backend, who 
 With this method the **maximum size is 2 GB**, this is the maximum supported In-Out Stream size in AL.
 
 Unfortunatly this method is **much slower than build-tin UploadIntoStream() function**.
-The reason is that OutStream.Write() function is very slow when running on large Text variable, and I did not find another way to pass the data with limited JS to AL interop capability.
+The reason is that OutStream.Write() function is very slow when running on large Text variable.
+I didn't find another way to pass the data from JS to AL due to limited variable type interoperability.
 
 ## **JS Addin**
 
-![enter image description here](https://github.com/MaximeCaty/AL-LargeFile-Uploader-Addin/blob/main/screenshot.png?raw=true)
+![JS Upload Addin screenshot](https://github.com/MaximeCaty/AL-LargeFile-Uploader-Addin/blob/main/screenshot.png?raw=true)
 
 You may put the addin files (upload.css, upload.js, TOOChunkedFileUploader.ControlAddin.al) in your project under an Addin subfolder. They must be located in the same folder.
 
